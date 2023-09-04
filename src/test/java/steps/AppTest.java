@@ -1,8 +1,9 @@
-package org.example;
+package steps;
 
 import Constantes.AtributosJson;
 import Constantes.EndPoints;
 import Constantes.RespostaAtributoJson;
+import io.cucumber.java.Before;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -10,14 +11,11 @@ import org.junit.Assert;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.containsString;
 
-import org.junit.BeforeClass;
-
-
 
 public class AppTest {
     public static String baseURI;
 
-    @BeforeClass
+    @Before
     public static void  carregarConfig(){
         baseURI = "http://localhost:3434/cars-app";
     }
@@ -25,39 +23,29 @@ public class AppTest {
 
 
     public static Response novoCadastro(String corpoRegistro){
-        Response response= given()
-                        .contentType(ContentType.JSON)
-                        .body(corpoRegistro)
-                .when()
-                .post("http://localhost:3434/cars-app/register")
-                .then()
-                        .extract().response();
-        return response;
-    }
-
-    private static Response novoCadastroComUsarnameJaExistente(String corpoRegistro){
         return given()
                         .contentType(ContentType.JSON)
                         .body(corpoRegistro)
-        .when()
-                        .post(baseURI+EndPoints.register)
-
-        .then()
+                .when()
+                .post(baseURI+EndPoints.register)
+                .then()
                         .extract().response();
 
     }
+
 
     public static Response realizarLogin(String corpoLogin){
         return  given()
                 .contentType(ContentType.JSON)
                 .body(corpoLogin)
        .when()
-                .post("http://localhost:3434/cars-app/api/login")
+                .post(baseURI+EndPoints.login)
 
        .then()
                 .log().all().extract().response();
 
     }
+
 
     public static void cadastrarNovoVeiculoForwardCar(){
       Response cadastrarNovoVeiculo=cadastrarVeiculo();
@@ -69,7 +57,7 @@ public class AppTest {
                 .contentType(ContentType.JSON)
                 .body(gerarCorpoCadastroVeiculo())
        .when()
-                .post("http://localhost:3434/cars-app/carShop/cars")
+                .post(baseURI+EndPoints.carShop)
 
        .then()
                .log().all().extract().response();
@@ -79,32 +67,15 @@ public class AppTest {
     public static void consultarNovoVeiculoCadastradoComGet(){
         given()
                 .when()
-                .get("http://localhost:3434/cars-app/carShop/cars")
+                .get(baseURI+EndPoints.carShop)
                 .then().body(containsString(RespostaAtributoJson.numeroVin));
     }
-    public static Response consultarVeiculoCadastrado(){
-        return given()
-                .param(AtributosJson.vin,RespostaAtributoJson.numeroVin)
-                .when()
-                .get(baseURI+EndPoints.carShop)
 
-                .then()
-                .extract().response();
-
-
-    }
 
     /**
      * metodos Json//
      */
-    public static String gerarCorpoCadastro(String firstname,String lastname,String username,String password) {
-        JSONObject corpoCadastro = new JSONObject();
-        corpoCadastro.put(AtributosJson.firstname, firstname);
-        corpoCadastro.put(AtributosJson.lastname, lastname);
-        corpoCadastro.put(AtributosJson.username, username);
-        corpoCadastro.put(AtributosJson.password, password);
-        return corpoCadastro.toString();
-    }
+
     public static String gerarCorpoLogin(String username, String password){
         JSONObject corpoLogin = new JSONObject();
         corpoLogin.put(AtributosJson.username,username);

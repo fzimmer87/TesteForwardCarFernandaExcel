@@ -1,4 +1,4 @@
-package org.example;
+package steps;
 
 import Constantes.EnviarEndPoints;
 import io.cucumber.datatable.DataTable;
@@ -32,8 +32,10 @@ public class MyStepdefs {
 
     @Entao("sistema me retorna statusCode {int}")
     public void sistemaMeRetornaStatusCode(int statusCode) {
-        Response response = EnviarEndPoints.enviarEndpoints();
-        response.then().log().all().assertThat().statusCode(statusCode);
+        List<Response> response = EnviarEndPoints.enviarEndpoints();
+        for (int i = 0; i < response.size() ; i++) {
+            response.get(i).then().log().all().assertThat().statusCode(statusCode);
+        }
     }
 
     @Dado("que tenho a massa para realizar cadastro com usarname existente")
@@ -45,9 +47,10 @@ public class MyStepdefs {
 
     @Entao("sistema nao realiza cadastro e retorna statusCode {int}")
     public void sistemaNaoRealizaCadastroERetornaStatusCode(int statusCode) {
-        Response response = EnviarEndPoints.enviarEndpoints();
-        response.then().log().all().assertThat().statusCode(statusCode);
-
+        List<Response> responses = EnviarEndPoints.enviarEndpoints();
+        for (int i = 0; i < responses.size(); i++) {
+            responses.get(i).then().log().all().assertThat().statusCode(statusCode);
+        }
     }
 
     @Dado("que tenho cadastro com usarname e senha cadastrados na massa de dados")
@@ -58,8 +61,11 @@ public class MyStepdefs {
     }
     @Entao("o sistema me retorna status code {int}")
     public void oSistemaMeRetornaStatusCode(int statusCode) {
-        Response response = EnviarEndPoints.enviarEndpointsLogin();
-        response.then().log().all().assertThat().statusCode(statusCode);
+        List<Response> response = EnviarEndPoints.enviarEndpointsLogin();
+        for (int i = 0; i < response.size(); i++) {
+            response.get(i).then().log().all().assertThat().statusCode(statusCode);
+        }
+
     }
 
     @Dado("que quero cadastrar um novo veículo e preencho os seguintes campos")

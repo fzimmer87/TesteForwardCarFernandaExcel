@@ -1,14 +1,23 @@
-package pom.utils;
-
-import pom.DTO.ApiDTO;
-import pom.DTO.TaskDTO;
-
+package utils;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
 
 public class ArquivoTxt {
 
     public static PrintWriter abrirArquivo(String nomePasta, String nomeArquivo) throws IOException {
-        FileWriter arq = new FileWriter(nomePasta + "\\" + nomeArquivo + ".txt");
+        Path txt = Paths.get(nomePasta + File.separator + nomeArquivo+".txt");
+        if(Files.notExists(txt.getParent())){
+            Files.createDirectory(txt.getParent());
+        }
+        if(Files.notExists(txt)) {
+            Files.createFile(txt);
+        }
+
+        FileWriter arq = new FileWriter(txt.toString());
         PrintWriter gravarArq = new PrintWriter(arq);
 
         return gravarArq;
@@ -16,16 +25,16 @@ public class ArquivoTxt {
 
     public static void escreverTexto(String linha, String titulo, String valor, PrintWriter gravarArq){
         gravarArq.printf(titulo + "_" + linha + ": ");
-        gravarArq.printf(valor + "%n");
+        gravarArq.printf(Geral.removerAcentos(valor.trim().toLowerCase()) + "%n");
     }
 
     public static void fecharArquivo(PrintWriter gravarArq){
         gravarArq.close();
     }
 
-    public static String lerArquivo(TaskDTO pixDTO, String busca){
+    public static String lerArquivo(String busca, String arquivoTxt){
         try {
-            FileReader arq = new FileReader(pixDTO.getNomePasta() + "\\Dados_Excel.txt");
+            FileReader arq = new FileReader(Excel.caminho + "\\" + arquivoTxt);
             BufferedReader lerArq = new BufferedReader(arq);
 
             String linha = lerArq.readLine(); // lê a primeira linha
@@ -35,7 +44,6 @@ public class ArquivoTxt {
                     arq.close();
                     return linha.split(":")[1].trim();
                 }
-
                 linha = lerArq.readLine();
             }
 
@@ -49,35 +57,6 @@ public class ArquivoTxt {
         }
 
         return null;
-    }
 
-    private static PrintWriter evidenciaPadrao(ApiDTO apiDTO, PrintWriter arq){
-        ArquivoTxt.escreverTexto("","URI", apiDTO.getUrl(), arq);
-        if(apiDTO.getParams() != null) ArquivoTxt.escreverTexto("","PARAMS", apiDTO.getParams().toString(), arq);
-        if(apiDTO.getHeader() != null) ArquivoTxt.escreverTexto("","HEADER", apiDTO.getHeader().toString(), arq);
-        if(apiDTO.getBody() != null) ArquivoTxt.escreverTexto("","BODY", apiDTO.getBody(), arq);
-        ArquivoTxt.escreverTexto("","RESP", apiDTO.getResp().asString(), arq);
-        ArquivoTxt.escreverTexto("","STATUS CODE", apiDTO.getResp().statusLine() , arq);
-
-        return arq;
-    }
-
-    public static void escreverAPI(String nomePasta, String nomeArquivo, ApiDTO apiDTO) throws IOException {
-        PrintWriter arq = ArquivoTxt.abrirArquivo(nomePasta, nomeArquivo);
-
-        arq = evidenciaPadrao(apiDTO, arq);
-
-        ArquivoTxt.fecharArquivo(arq);
-    }
-
-    public static void DeletaArquivo(String nomeArquivo){
-        File file = new File(nomeArquivo);
-
-        if (file.delete())
-            System.out.println("File deleted");
-        else
-            System.out.println("File was not deleted");
     }
 }
-jetbrains://idea/navigate/reference?project=TesteForwardCarFernandaeEdson&path=~\Downloads\ArquivoTxt.java
-
