@@ -17,10 +17,10 @@ public class ManipuladorPropeties {
     public static void  main(String args[]) throws IOException {
         String login; //Variavel que guardará o login do usuário.
         String password; //Variável que guardará o password do usúario.
-        String baseUri;
-        String register;
-        String cadastrarVeiculo;
-        String cadastrarUsuario;
+        String baseUri; //Variável página original sem Endpoints.
+        String register; //Variável para realizar cadastro.
+        String cadastrarVeiculo; //Variável para cadastrar veículo.
+        String cadastrarUsuario; //Variável para cadastrar usuário.
         System.out.println("************Teste de leitura do arquivo de propriedades************");
 
         Properties prop = getProp();
