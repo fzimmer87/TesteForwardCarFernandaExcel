@@ -75,7 +75,14 @@ public class AppTest {
     /**
      * metodos Json//
      */
-
+    public static String gerarCorpoCadastro(String firstname,String lastname,String username,String password) {
+        JSONObject corpoCadastro = new JSONObject();
+        corpoCadastro.put(AtributosJson.firstname, firstname);
+        corpoCadastro.put(AtributosJson.lastname, lastname);
+        corpoCadastro.put(AtributosJson.username, username);
+        corpoCadastro.put(AtributosJson.password, password);
+        return corpoCadastro.toString();
+    }
     public static String gerarCorpoLogin(String username, String password){
         JSONObject corpoLogin = new JSONObject();
         corpoLogin.put(AtributosJson.username,username);
