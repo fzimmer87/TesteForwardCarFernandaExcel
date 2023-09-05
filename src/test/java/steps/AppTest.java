@@ -12,8 +12,10 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.containsString;
 
 
+
 public class AppTest {
     public static String baseURI;
+
 
     @Before
     public static void  carregarConfig(){
@@ -21,8 +23,7 @@ public class AppTest {
     }
 
 
-
-    public static Response novoCadastro(String corpoRegistro){
+    public static Response novoCadastro(String corpoRegistro)  {
         return given()
                         .contentType(ContentType.JSON)
                         .body(corpoRegistro)
@@ -39,7 +40,7 @@ public class AppTest {
                 .contentType(ContentType.JSON)
                 .body(corpoLogin)
        .when()
-                .post(baseURI+EndPoints.login)
+                .post(baseURI+EndPoints.register)
 
        .then()
                 .log().all().extract().response();
