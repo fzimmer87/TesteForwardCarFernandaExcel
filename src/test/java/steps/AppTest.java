@@ -1,74 +1,72 @@
 package steps;
 
 import Constantes.AtributosJson;
-import Constantes.EndPoints;
 import Constantes.RespostaAtributoJson;
-import io.cucumber.java.Before;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Assert;
+import utils.LerPropeties;
+import java.io.IOException;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.containsString;
 
 
 
 public class AppTest {
-    public static String baseURI;
 
 
-    @Before
-    public static void  carregarConfig(){
-        baseURI = "http://localhost:3434/cars-app";
-    }
+    public static Response novoCadastro(String corpoRegistro) throws IOException {
+        LerPropeties manipulador = new LerPropeties();
 
-
-    public static Response novoCadastro(String corpoRegistro)  {
         return given()
-                        .contentType(ContentType.JSON)
-                        .body(corpoRegistro)
+                .contentType(ContentType.JSON)
+                .body(corpoRegistro)
                 .when()
-                .post(baseURI+EndPoints.register)
+                .post(manipulador.getRegister())
                 .then()
-                        .extract().response();
+                .extract().response();
 
     }
 
 
-    public static Response realizarLogin(String corpoLogin){
+    public static Response realizarLogin(String corpoLogin) throws IOException {
+        LerPropeties manipulador = new LerPropeties();
         return  given()
                 .contentType(ContentType.JSON)
                 .body(corpoLogin)
-       .when()
-                .post(baseURI+EndPoints.register)
+                .when()
+                .post(manipulador.getCadastrarUsuario())
 
-       .then()
+                .then()
                 .log().all().extract().response();
 
     }
 
 
-    public static void cadastrarNovoVeiculoForwardCar(){
-      Response cadastrarNovoVeiculo=cadastrarVeiculo();
-      Assert.assertEquals(cadastrarNovoVeiculo.jsonPath().getString(AtributosJson.vin),RespostaAtributoJson.numeroVin);
+    public static void cadastrarNovoVeiculoForwardCar() throws IOException {
+        Response cadastrarNovoVeiculo=cadastrarVeiculo();
+        Assert.assertEquals(cadastrarNovoVeiculo.jsonPath().getString(AtributosJson.vin),RespostaAtributoJson.numeroVin);
         System.out.println(cadastrarNovoVeiculo);
     }
-    public static Response cadastrarVeiculo(){
-       return    given()
+    public static Response cadastrarVeiculo() throws IOException {
+        LerPropeties manipulador = new LerPropeties();
+        return    given()
                 .contentType(ContentType.JSON)
                 .body(gerarCorpoCadastroVeiculo())
-       .when()
-                .post(baseURI+EndPoints.carShop)
+                .when()
+                .post(manipulador.getCadastrarVeiculo())
 
-       .then()
-               .log().all().extract().response();
+                .then()
+                .log().all().extract().response();
 
     }
 
-    public static void consultarNovoVeiculoCadastradoComGet(){
+    public static void consultarNovoVeiculoCadastradoComGet() throws IOException {
+        LerPropeties manipulador = new LerPropeties();
         given()
                 .when()
-                .get(baseURI+EndPoints.carShop)
+                .get(manipulador.getCadastrarVeiculo())
                 .then().body(containsString(RespostaAtributoJson.numeroVin));
     }
 
@@ -122,7 +120,7 @@ public class AppTest {
         corpoCadastro.put(AtributosJson.type,type);
         type.put(AtributosJson.classs,RespostaAtributoJson.classType);
         type.put(AtributosJson.id,RespostaAtributoJson.idType);
-       type.put(AtributosJson.name, RespostaAtributoJson.nameType);
+        type.put(AtributosJson.name, RespostaAtributoJson.nameType);
         corpoCadastro.put(AtributosJson.stockNumber,RespostaAtributoJson.stockNumber);
         corpoCadastro.put(AtributosJson.price,RespostaAtributoJson.price);
         corpoCadastro.put(AtributosJson.milage,RespostaAtributoJson.milage);
@@ -140,7 +138,7 @@ public class AppTest {
         return corpoCadastro.toString();
     }
 
-    }
+}
 
 
 

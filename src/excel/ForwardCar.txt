@@ -1,4 +1,2 @@
-firstname_1: fernanda
-lastname_1: zimmer
 usarname_1: zimmerf
 password_1: 852456

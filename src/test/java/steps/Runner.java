@@ -6,11 +6,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {
-                "src/test/resources/Feature/ForwardCar.feature",
-        },
+        features = "src/test/resources/Feature/ForwardCar.feature",
 
-        tags = "@CT001"
+        tags = "@CT005"
 
 )
 public class Runner {

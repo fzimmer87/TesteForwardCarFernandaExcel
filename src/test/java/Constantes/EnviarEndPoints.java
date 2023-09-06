@@ -4,6 +4,8 @@ package Constantes;
 import io.restassured.response.Response;
 import steps.AppTest;
 import utils.ArquivoTxt;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class EnviarEndPoints {
         }
     }
 
-    public static List<Response> enviarEndpoints() {
+    public static List<Response> enviarEndpoints() throws IOException {
 
         for (int i = 0; i < password.size(); i++) {
             String corpoRegistro = AppTest.gerarCorpoCadastro(firstname.get(i),lastname.get(i),
@@ -61,7 +63,7 @@ public class EnviarEndPoints {
             }
         }
     }
-    public static List<Response> enviarEndpointsLogin() {
+    public static List<Response> enviarEndpointsLogin() throws IOException {
 
         for (int i = 0; i < password.size(); i++) {
             String corpoLogin = AppTest.gerarCorpoLogin(usarname.get(i),password.get(i));
