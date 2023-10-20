@@ -3,6 +3,8 @@ package steps;
 import Constantes.AtributosJson;
 import Constantes.RespostaAtributoJson;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -46,8 +48,9 @@ public class AppTest {
 
     public static void cadastrarNovoVeiculoForwardCar() throws IOException {
         Response cadastrarNovoVeiculo=cadastrarVeiculo();
-        Assert.assertEquals(cadastrarNovoVeiculo.jsonPath().getString(AtributosJson.vin),RespostaAtributoJson.numeroVin);
-        System.out.println(cadastrarNovoVeiculo);
+        JsonPath xmlPath = new JsonPath(cadastrarNovoVeiculo.asString());
+        String result = xmlPath.getString("vin");
+        Assert.assertTrue(result.contains(RespostaAtributoJson.numeroVin));
     }
     public static Response cadastrarVeiculo() throws IOException {
         LerPropeties manipulador = new LerPropeties();

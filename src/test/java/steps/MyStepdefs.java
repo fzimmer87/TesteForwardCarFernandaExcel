@@ -36,7 +36,7 @@ public class MyStepdefs {
     @Entao("sistema me retorna statusCode {int}")
     public void sistemaMeRetornaStatusCode(int statusCode) throws IOException {
         List<Response> response = EnviarEndPoints.enviarEndpoints();
-        for (int i = 0; i < response.size() ; i++) {
+        for (int i = 0; i < response.size(); i++) {
             response.get(i).then().log().all().assertThat().statusCode(statusCode);
         }
     }
@@ -67,15 +67,13 @@ public class MyStepdefs {
         List<Response> response = EnviarEndPoints.enviarEndpointsLogin();
         for (int i = 0; i < response.size(); i++) {
             response.get(i).then().log().all().assertThat().statusCode(statusCode);
-        }
-
-    }
+        }}
 
     @Dado("que quero cadastrar um novo veículo e preencho os seguintes campos")
     public void queQueroCadastrarUmNovoVeículoEPreenchoOsSeguintesCampos() throws IOException {
         AppTest.cadastrarVeiculo();
     }
-    @Entao("sistema me retorna o VIN do modelo que cadastrei")
+      @Entao("sistema me retorna o VIN do modelo que cadastrei")
     public void sistemaMeRetornaOVINDoModeloQueCadastrei() throws IOException {
         AppTest.cadastrarNovoVeiculoForwardCar();
     }
@@ -90,8 +88,5 @@ public class MyStepdefs {
     public void sistemaMeRetornaVINDoCarroCadastradoNoGET() throws IOException {
         AppTest.consultarNovoVeiculoCadastradoComGet();
     }
-
-
-
 }
 
